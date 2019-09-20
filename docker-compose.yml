@@ -1,0 +1,16 @@
+version: '3'
+services:
+  dev_trace_server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ${HOME_DIR}:/homedir
+    networks:
+     - tv_net
+
+networks:
+  tv_net:
+    external: true
