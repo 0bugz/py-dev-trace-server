@@ -8,10 +8,6 @@ from zb_common import Util
 app = Flask(__name__)
 util = Util("../config/test.cfg", "Dev Trace Server")
 
-# Slack channel config
-eng_ops_alerts = util.get_env_value("eng-ops-alerts", "slack-channels")
-# Slack channel config
-
 @app.route("/echo", methods=['POST'])
 def echo():
     print("Echoing message")
@@ -26,14 +22,13 @@ def echo():
         msg_body = request.data.decode('utf-8', 'strict')
         print(request.headers)
         print(contentType)
-        print(msg_body)        
+        print(msg_body)
         resp["message"] = msg_body
     except Exception as e:
         message = "Exception processing message: {}".format(e)
         resp["message"] = message
         resp["status"] = "failure"
         http_status_code = 500
-        util.slack_log(eng_ops_alerts, message)
     finally:
         return json.dumps(resp), http_status_code
 
